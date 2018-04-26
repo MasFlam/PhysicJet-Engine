@@ -28,4 +28,27 @@ class Segment {
     strokeWeight(1);
     line(pA.x, pA.y, pB.x, pB.y);
   }
+  
+  boolean intersects(Segment s){
+    //Calculate angle between this & x axis
+    pushMatrix();
+    translate(pA.x, pA.y);
+    float theta = atan(pB.y / pB.x);
+    popMatrix();
+    //Calculate angle between s & x axis
+    pushMatrix();
+    translate(s.pA.x, s.pA.y);
+    float thetaS = atan(s.pB.y / s.pB.x);
+    popMatrix();
+    //Check if angle is the same - segments are paralell or collinear
+    if(theta == thetaS){
+      return true;
+    } else {
+      //Rotate by theta - make this segment parallel with x axis
+      rotate(theta);
+      Point intersectionPoint = new Point(0, pA.y);
+    }
+    
+    return true;
+  }
 }
