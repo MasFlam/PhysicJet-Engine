@@ -30,28 +30,6 @@ class Segment {
   }
   
   boolean intersects(Segment s){
-    ////Calculate angle between this & x axis
-    //pushMatrix();
-    //translate(pA.x, pA.y);
-    //float theta = atan(pB.y / pB.x);
-    //popMatrix();
-    ////Calculate angle between s & x axis
-    //pushMatrix();
-    //translate(s.pA.x, s.pA.y);
-    //float thetaS = atan(s.pB.y / s.pB.x);
-    //popMatrix();
-    ////Check if angle is the same - segments are parallel or collinear
-    //if(theta == thetaS){
-    //  return true;
-    //} else {
-    //  //Rotate by theta - make this segment parallel with x axis
-    //  pushMatrix();
-    //  translate(pA.x, pA.y);
-    //  float r = sqrt(pow(pB.x, 2) + pow(pB.y, 2));
-    //  popMatrix();
-      
-    //  Point intersectionPoint = new Point(0, pA.y);
-    //}
     
     //This ingenious vector-based solution is fro the answer of Jason Cohen from Stack Overflow to the question #563198:
     
