@@ -33,7 +33,7 @@ class Segment {
     return dist(pA.x, pA.y, pB.x, pB.y);
   }
   
-  boolean intersects(Segment s){ // Line-line
+  boolean intersects(Segment s){ //Sgmt-sgmt
     
     //This ingenious vector-based solution is from the answer of Jason Cohen from Stack Overflow to the question #563198:
     
@@ -55,7 +55,7 @@ class Segment {
     }
   }
   
-  boolean intersects(Rectangle r){ //Line-rect
+  boolean intersects(Rectangle r){ //Sgmt-rect
     Segment[] sides = r.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
       if(sides[i].intersects(this)){
@@ -65,7 +65,7 @@ class Segment {
     return false;
   }
   
-  boolean intersects(Polygon p){ //Line-poly
+  boolean intersects(Polygon p){ //Sgmt-poly
     Segment[] sides = p.sides;
     for(int i = 0; i < sides.length; i++){
       if(sides[i].intersects(this)){
@@ -75,10 +75,11 @@ class Segment {
     return false;
   }
   
-  boolean intersects(Point p){ //Line-point
+  boolean intersects(Point p){ //Sgmt-point
     float l = this.length();
-    float dSq1 = distSq(pA.x, pA.y, p.pos.x, p.pos.y);
-    float dSq2 = distSq(pB.x, pB.y, p.pos.x, p.pos.y);
-    return l == (dSq1 + dSq2);
+    float d1 = dist(pA.x, pA.y, p.pos.x, p.pos.y);
+    float d2Sq = distSq(pB.x, pB.y, p.pos.x, p.pos.y);
+    float d2SqWhenIntersects = pow((l - d1), 2);
+    return d2Sq == d2SqWhenIntersects;
   }
 }

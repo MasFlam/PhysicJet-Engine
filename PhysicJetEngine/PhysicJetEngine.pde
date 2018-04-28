@@ -2,6 +2,7 @@
 void setup(){
   size(640, 480);
   ellipseMode(RADIUS);
+  background(0);
 }
 
 void draw(){

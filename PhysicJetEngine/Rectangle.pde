@@ -31,7 +31,7 @@ class Rectangle {
     return sides;
   }
   
-  boolean intersects(Segment s){
+  boolean intersects(Segment s){ //Rect-sgmt
     Segment[] sides = this.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
       if(sides[i].intersects(s)){
@@ -54,7 +54,7 @@ class Rectangle {
     return false;
   }
   
-  boolean intersects(Polygon p){
+  boolean intersects(Polygon p){ //Rect-poly
     Segment[] sides = this.getSidesAsSegmentArray();
     Segment[] sidesP = p.sides;
     for(int i = 0; i < sides.length; i++){
@@ -67,7 +67,7 @@ class Rectangle {
     return false;
   }
   
-  boolean intersects(Point p){
+  boolean intersects(Point p){ //Rect-point
     Segment[] sides = this.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
       if(sides[i].intersects(p)){
