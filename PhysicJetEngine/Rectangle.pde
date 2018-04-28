@@ -31,4 +31,50 @@ class Rectangle {
     return sides;
   }
   
+  boolean intersects(Segment s){
+    Segment[] sides = this.getSidesAsSegmentArray();
+    for(int i = 0; i < sides.length; i++){
+      if(sides[i].intersects(s)){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  boolean intersects(Rectangle r){
+    Segment[] sides = this.getSidesAsSegmentArray();
+    Segment[] sidesR = r.getSidesAsSegmentArray();
+    for(int i = 0; i < sides.length; i++){
+      for(int j = 0; j < sidesR.length; j++){
+        if(sides[i].intersects(sidesR[j])){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  boolean intersects(Polygon p){
+    Segment[] sides = this.getSidesAsSegmentArray();
+    Segment[] sidesP = p.sides;
+    for(int i = 0; i < sides.length; i++){
+      for(int j = 0; j < sidesP.length; j++){
+        if(sides[i].intersects(sidesP[j])){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  boolean intersects(Point p){
+    Segment[] sides = this.getSidesAsSegmentArray();
+    for(int i = 0; i < sides.length; i++){
+      if(sides[i].intersects(p)){
+        return true;
+      }
+    }
+    return false;
+  }
+  
 }
