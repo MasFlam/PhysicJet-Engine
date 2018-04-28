@@ -29,9 +29,13 @@ class Segment {
     line(pA.x, pA.y, pB.x, pB.y);
   }
   
-  boolean intersects(Segment s){
+  float length(){
+    return dist(pA.x, pA.y, pB.x, pB.y);
+  }
+  
+  boolean intersects(Segment s){ // Line-line
     
-    //This ingenious vector-based solution is fro the answer of Jason Cohen from Stack Overflow to the question #563198:
+    //This ingenious vector-based solution is from the answer of Jason Cohen from Stack Overflow to the question #563198:
     
     PVector e = PVector.sub(pB, pA);
     PVector f = PVector.sub(s.pB, s.pA);
@@ -49,5 +53,32 @@ class Segment {
         return false;
       }
     }
+  }
+  
+  boolean intersects(Rectangle r){ //Line-rect
+    Segment[] sides = r.getSidesAsSegmentArray();
+    for(int i = 0; i < sides.length; i++){
+      if(sides[i].intersects(this)){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  boolean intersects(Polygon p){ //Line-poly
+    Segment[] sides = p.sides;
+    for(int i = 0; i < sides.length; i++){
+      if(sides[i].intersects(this)){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  boolean intersects(Point p){ //Line-point
+    float l = this.length();
+    float dSq1 = distSq(pA.x, pA.y, p.pos.x, p.pos.y);
+    float dSq2 = distSq(pB.x, pB.y, p.pos.x, p.pos.y);
+    return l == (dSq1 + dSq2);
   }
 }
