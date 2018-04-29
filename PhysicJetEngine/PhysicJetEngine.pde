@@ -1,18 +1,22 @@
+Circle c;
+Segment s;
 
 void setup(){
   size(640, 480);
   ellipseMode(RADIUS);
   background(0);
   
-  Segment s = new Segment(400, 256, 50, 300);
-  Circle c = new Circle(217, 240, 67);
-  s.show();
-  c.show();
-  println(s.intersects(c));
+  s = new Segment(400, 256, 50, 300);
+  c = new Circle(600, 230, 67);
 }
 
 void draw(){
-  //background(0);
+  background(0);
+  c.pos = new PVector(mouseX, mouseY);
+  
+  s.show();
+  c.show();
+  println(s.intersects(c));
 }
 
 float distSq(float x1, float y1, float x2, float y2){

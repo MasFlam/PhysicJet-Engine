@@ -41,7 +41,7 @@ class Rectangle {
     return false;
   }
   
-  boolean intersects(Rectangle r){
+  boolean intersects(Rectangle r){ //Rect-rect
     Segment[] sides = this.getSidesAsSegmentArray();
     Segment[] sidesR = r.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
@@ -71,6 +71,16 @@ class Rectangle {
     Segment[] sides = this.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
       if(sides[i].intersects(p)){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  boolean intersects(PVector v){ //Rect-point
+    Segment[] sides = this.getSidesAsSegmentArray();
+    for(int i = 0; i < sides.length; i++){
+      if(sides[i].intersects(v)){
         return true;
       }
     }

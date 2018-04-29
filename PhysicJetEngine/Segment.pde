@@ -83,24 +83,36 @@ class Segment {
     return d2Sq == d2SqWhenIntersects;
   }
   
-  boolean intersects(Circle crcl){
-    Segment cs = new Segment(pA, crcl.pos);
-    PVector cv = new PVector(cs.pB.x - cs.pA.x, cs.pB.y - cs.pA.y);
-    PVector bv = new PVector(pB.x - pA.x, pB.y - pA.y);
-    
-    float theta = PVector.angleBetween(cv, bv);
-    float c = cs.length();
-    float b = c * cos(theta);
-    float a = sqrt(pow(c, 2) - pow(b, 2));
-    
-    // Uncomment to display orange bv & cv
-    //
-    //strokeWeight(1);
-    //stroke(255, 128, 0);
-    //line(pA.x, pA.y, pA.x + cv.x, pA.y + cv.y);
-    //line(pA.x, pA.y, pA.x + bv.x, pA.y + bv.y);
-    //
-    
-    return a <= crcl.r;
+  boolean intersects(PVector v){ //Sgmt-point
+    float l = this.length();
+    float d1 = dist(pA.x, pA.y, v.x, v.y);
+    float d2Sq = distSq(pB.x, pB.y, v.x, v.y);
+    float d2SqWhenIntersects = pow((l - d1), 2);
+    return d2Sq == d2SqWhenIntersects;
+  }
+  
+  boolean intersects(Circle crcl){ //Sgmt-crcl
+    if(crcl.inside(pA) || crcl.inside(pB)){
+      return true;
+    } else {
+      Segment cs = new Segment(pA, crcl.pos);
+      PVector cv = new PVector(cs.pB.x - cs.pA.x, cs.pB.y - cs.pA.y);
+      PVector bv = new PVector(pB.x - pA.x, pB.y - pA.y);
+      
+      float theta = PVector.angleBetween(cv, bv);
+      float c = cs.length();
+      float b = c * cos(theta);
+      float a = c * sin(theta);
+      
+      // Uncomment to display orange bv & cv
+      //
+      strokeWeight(1);
+      stroke(255, 128, 0);
+      line(pA.x, pA.y, pA.x + cv.x, pA.y + cv.y);
+      line(pA.x, pA.y, pA.x + bv.x, pA.y + bv.y);
+      //
+      
+      return a <= crcl.r;
+    }
   }
 }

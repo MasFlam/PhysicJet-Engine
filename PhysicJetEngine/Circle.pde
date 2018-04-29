@@ -29,4 +29,28 @@ class Circle {
     
   }
   
+  boolean inside(Point p){ //Crcl-point
+    return inside(p.pos.x, p.pos.y);
+  }
+  
+  boolean inside(PVector v){ //Crcl-point
+    return inside(v.x, v.y);
+  }
+  
+  boolean inside(float x, float y){ //Crcl-point
+    if(dist(x, y, this.pos.x, this.pos.y) <= this.r){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  boolean intersects(Circle crcl){ //Crcl-crcl
+    if(dist(pos.x, pos.y, crcl.pos.x, crcl.pos.y) <= (this.r + crcl.r)){
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
 }
