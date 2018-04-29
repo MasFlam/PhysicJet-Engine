@@ -18,6 +18,15 @@ class Circle {
     stroke(255);
     strokeWeight(1);
     ellipse(pos.x, pos.y, r, r);
+    
+    strokeWeight(1);
+    stroke(255, 0, 0);
+    line(pos.x, pos.y, pos.x + r, pos.y);
+    
+    strokeWeight(5);
+    stroke(255);
+    point(pos.x, pos.y);
+    
   }
   
 }
