@@ -92,8 +92,10 @@ class Segment {
   }
   
   boolean intersects(Circle crcl){ //Sgmt-crcl
-    if(crcl.inside(pA) || crcl.inside(pB)){
+    if((crcl.inside(pA) && !crcl.inside(pB)) || (!crcl.inside(pA) && crcl.inside(pB))){
       return true;
+    } else if(crcl.inside(pA) && crcl.inside(pB)){
+      return false;
     } else {
       Segment cs = new Segment(pA, crcl.pos);
       PVector cv = new PVector(cs.pB.x - cs.pA.x, cs.pB.y - cs.pA.y);
@@ -104,6 +106,21 @@ class Segment {
       float b = c * cos(theta);
       float a = c * sin(theta);
       
+      boolean condition1 = a <= crcl.r;
+      
+      
+      PVector cv_inv = new PVector(cs.pA.x - cs.pB.x, cs.pA.y - cs.pB.y);
+      Segment c2s = new Segment(pB, crcl.pos);
+      PVector c2v = new PVector(c2s.pA.x - c2s.pB.x, c2s.pA.y - c2s.pB.y);
+      
+      float angle1 = PVector.angleBetween(bv, cv_inv);
+      float cos1 = cos(angle1);
+      float angle2 = PVector.angleBetween(bv, c2v);
+      float cos2 = cos(angle2);
+      
+      boolean condition2 = cos1 * cos2 < 0;
+      
+      
       // Uncomment to display orange bv & cv
       //
       strokeWeight(1);
@@ -112,7 +129,7 @@ class Segment {
       line(pA.x, pA.y, pA.x + bv.x, pA.y + bv.y);
       //
       
-      return a <= crcl.r;
+      return condition1 && condition2;
     }
   }
 }
