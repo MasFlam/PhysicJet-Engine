@@ -16,7 +16,7 @@ void draw(){
   
   s.show();
   c.show();
-  println(s.intersects(c));
+  println(c.intersects(s));
 }
 
 float distSq(float x1, float y1, float x2, float y2){

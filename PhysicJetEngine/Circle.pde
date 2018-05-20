@@ -53,4 +53,8 @@ class Circle {
     }
   }
   
+  boolean intersects(Segment s){
+    return s.intersects(this);
+  }
+  
 }
