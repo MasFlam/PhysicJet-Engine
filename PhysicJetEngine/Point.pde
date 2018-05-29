@@ -1,13 +1,11 @@
-class Point {
+class Point extends EngineObject {
   
-  PVector pos;
-  
-  Point(PVector position){
-    pos = position;
+  Point(PVector position, float mass){
+    super(position, mass);
   }
   
-  Point(float x, float y){
-    pos = new PVector(x, y);
+  Point(float x, float y, float mass){
+    super(new PVector(x, y), mass);
   }
   
   void show(){
@@ -16,7 +14,7 @@ class Point {
     point(pos.x, pos.y);
   }
   
-  boolean intersects(Segment s){ //Point-sgmt
+  boolean collides(Segment s){ //Point-sgmt
     float l = s.length();
     float d1 = dist(s.pA.x, s.pA.y, this.pos.x, this.pos.y);
     float d2Sq = distSq(s.pB.x, s.pB.y, this.pos.x, this.pos.y);
@@ -24,35 +22,35 @@ class Point {
     return d2Sq == d2SqWhenIntersects;
   }
   
-  boolean intersects(Rectangle r){ //Point-rect
+  boolean collides(Rectangle r){ //Point-rect
     Segment[] sides = r.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(this)){
+      if(sides[i].collides(this)){
         return true;
       }
     }
     return false;
   }
   
-  boolean intersects(Polygon p){ //Point-poly
+  boolean collides(Polygon p){ //Point-poly
     Segment[] sides = p.sides;
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(this)){
+      if(sides[i].collides(this)){
         return true;
       }
     }
     return false;
   }
   
-  boolean isIdentical(Point p){ //Point-point
+  boolean collides(Point p){ //Point-point
     return p.pos.x == pos.x && p.pos.y == pos.y;
   }
   
-  boolean isIdentical(PVector v){ //Point-point
+  boolean collides(PVector v){ //Point-point
     return v.x == pos.x && v.y == pos.y;
   }
   
-  boolean inside(Circle crcl){ //Point-crcl
+  boolean collides(Circle crcl){ //Point-crcl
     if(dist(pos.x, pos.y, crcl.pos.x, crcl.pos.y) <= crcl.r){
       return true;
     } else {

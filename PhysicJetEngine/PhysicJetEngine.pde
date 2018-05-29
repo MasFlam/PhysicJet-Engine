@@ -1,22 +1,23 @@
-Circle c;
-Segment s;
+Engine world;
+boolean temp = false;
 
 void setup(){
   size(640, 480);
   ellipseMode(RADIUS);
   background(0);
   
-  s = new Segment(400, 256, 50, 300);
-  c = new Circle(600, 230, 67);
+  world = new Engine(new PVector(0, 0.5), 0.98);
+  world.push(new Circle(200, 200, 40, 1.1), new Segment(100, 420, 440, 42, 0.7), new Point(320, 240, 1.8));
+}
+
+void mousePressed(){
+  temp = true;
 }
 
 void draw(){
   background(0);
-  c.pos = new PVector(mouseX, mouseY);
-  
-  s.show();
-  c.show();
-  println(c.intersects(s));
+  if(temp) world.update();
+  world.show();
 }
 
 float distSq(float x1, float y1, float x2, float y2){

@@ -1,15 +1,14 @@
-class Circle {
+class Circle extends EngineObject {
   
   float r;
-  PVector pos;
   
-  Circle(PVector position, float radius){
-    pos = position;
+  Circle(PVector position, float radius, float mass){
+    super(position, mass);
     r = radius;
   }
   
-  Circle(float x, float y, float radius){
-    pos = new PVector(x, y);
+  Circle(float x, float y, float radius, float mass){
+    super(new PVector(x, y), mass);
     r = radius;
   }
   
@@ -29,15 +28,15 @@ class Circle {
     
   }
   
-  boolean inside(Point p){ //Crcl-point
-    return inside(p.pos.x, p.pos.y);
+  boolean collides(Point p){ //Crcl-point
+    return collides(p.pos.x, p.pos.y);
   }
   
-  boolean inside(PVector v){ //Crcl-point
-    return inside(v.x, v.y);
+  boolean collides(PVector v){ //Crcl-point
+    return collides(v.x, v.y);
   }
   
-  boolean inside(float x, float y){ //Crcl-point
+  boolean collides(float x, float y){ //Crcl-point
     if(dist(x, y, this.pos.x, this.pos.y) <= this.r){
       return true;
     } else {
@@ -45,7 +44,7 @@ class Circle {
     }
   }
   
-  boolean intersects(Circle crcl){ //Crcl-crcl
+  boolean collides(Circle crcl){ //Crcl-crcl
     if(dist(pos.x, pos.y, crcl.pos.x, crcl.pos.y) <= (this.r + crcl.r)){
       return true;
     } else {
@@ -53,8 +52,8 @@ class Circle {
     }
   }
   
-  boolean intersects(Segment s){
-    return s.intersects(this);
+  boolean collides(Segment s){
+    return s.collides(this);
   }
   
 }

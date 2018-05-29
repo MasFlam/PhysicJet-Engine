@@ -1,10 +1,11 @@
-class Polygon {
+class Polygon extends EngineObject {
   
   Segment[] sides;
   
-  Polygon(boolean complete, Segment... segments){
+  Polygon(float mass, boolean complete, Segment... segments){
+    super(segments[0].pos, mass);
     if(complete){
-      Segment temp = new Segment(segments[segments.length-1].pB, segments[0].pA);
+      Segment temp = new Segment(segments[segments.length-1].pB, segments[0].pA, 0);
       sides = (Segment[]) concat(segments, new Segment[]{ temp });
     } else {
       sides = segments;
@@ -17,20 +18,20 @@ class Polygon {
     }
   }
   
-  boolean intersects(Segment s){ //Poly-sgmt
+  boolean collides(Segment s){ //Poly-sgmt
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(s)){
+      if(sides[i].collides(s)){
         return true;
       }
     }
     return false;
   }
   
-  boolean intersects(Rectangle r){ //Poly-rect
+  boolean collides(Rectangle r){ //Poly-rect
     Segment[] sidesP = r.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
       for(int j = 0; j < sidesP.length; j++){
-        if(sides[i].intersects(sidesP[j])){
+        if(sides[i].collides(sidesP[j])){
           return true;
         }
       }
@@ -38,11 +39,11 @@ class Polygon {
     return false;
   }
   
-  boolean intersects(Polygon p){ //Poly-poly
+  boolean collides(Polygon p){ //Poly-poly
     Segment[] sidesP = p.sides;
     for(int i = 0; i < sides.length; i++){
       for(int j = 0; j < sidesP.length; j++){
-        if(sides[i].intersects(sidesP[j])){
+        if(sides[i].collides(sidesP[j])){
           return true;
         }
       }
@@ -50,18 +51,18 @@ class Polygon {
     return false;
   }
   
-  boolean intersects(Point p){ //Poly-point
+  boolean collides(Point p){ //Poly-point
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(p)){
+      if(sides[i].collides(p)){
         return true;
       }
     }
     return false;
   }
   
-  boolean intersects(PVector v){ //Poly-point
+  boolean collides(PVector v){ //Poly-point
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(v)){
+      if(sides[i].collides(v)){
         return true;
       }
     }

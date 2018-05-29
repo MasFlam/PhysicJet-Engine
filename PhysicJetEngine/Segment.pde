@@ -1,26 +1,39 @@
-class Segment {
+class Segment extends EngineObject {
   
   PVector pA;
   PVector pB;
   
-  Segment(PVector start, PVector end){
+  Segment(PVector start, PVector end, float mass){
+    super(start, mass);
     pA = start;
     pB = end;
   }
   
-  Segment(float x1, float y1, PVector end){
+  Segment(float x1, float y1, PVector end, float mass){
+    super(new PVector(x1, y1), mass);
     pA = new PVector(x1, y1);
     pB = end;
   }
   
-  Segment(PVector start, float x2, float y2){
+  Segment(PVector start, float x2, float y2, float mass){
+    super(start, mass);
     pA = start;
     pB = new PVector(x2, y2);
   }
   
-  Segment(float x1, float y1, float x2, float y2){
+  Segment(float x1, float y1, float x2, float y2, float mass){
+    super(new PVector(x1, y1), mass);
     pA = new PVector(x1, y1);
     pB = new PVector(x2, y2);
+  }
+  
+  void update(float drag){
+    pA.add(vel);
+    pB.add(vel);
+    vel.mult(drag * coefficient);
+    vel.add(acc);
+    acc.mult(0);
+    pos = pA;
   }
   
   void show(){
@@ -33,7 +46,7 @@ class Segment {
     return dist(pA.x, pA.y, pB.x, pB.y);
   }
   
-  boolean intersects(Segment s){ //Sgmt-sgmt
+  boolean collides(Segment s){ //Sgmt-sgmt
     
     //This ingenious vector-based solution is from the answer of Jason Cohen from Stack Overflow to the question #563198:
     
@@ -55,27 +68,27 @@ class Segment {
     }
   }
   
-  boolean intersects(Rectangle r){ //Sgmt-rect
+  boolean collides(Rectangle r){ //Sgmt-rect
     Segment[] sides = r.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(this)){
+      if(sides[i].collides(this)){
         return true;
       }
     }
     return false;
   }
   
-  boolean intersects(Polygon p){ //Sgmt-poly
+  boolean collides(Polygon p){ //Sgmt-poly
     Segment[] sides = p.sides;
     for(int i = 0; i < sides.length; i++){
-      if(sides[i].intersects(this)){
+      if(sides[i].collides(this)){
         return true;
       }
     }
     return false;
   }
   
-  boolean intersects(Point p){ //Sgmt-point
+  boolean collides(Point p){ //Sgmt-point
     float l = this.length();
     float d1 = dist(pA.x, pA.y, p.pos.x, p.pos.y);
     float d2Sq = distSq(pB.x, pB.y, p.pos.x, p.pos.y);
@@ -83,7 +96,7 @@ class Segment {
     return d2Sq == d2SqWhenIntersects;
   }
   
-  boolean intersects(PVector v){ //Sgmt-point
+  boolean collides(PVector v){ //Sgmt-point
     float l = this.length();
     float d1 = dist(pA.x, pA.y, v.x, v.y);
     float d2Sq = distSq(pB.x, pB.y, v.x, v.y);
@@ -91,26 +104,25 @@ class Segment {
     return d2Sq == d2SqWhenIntersects;
   }
   
-  boolean intersects(Circle crcl){ //Sgmt-crcl
-    if((crcl.inside(pA) && !crcl.inside(pB)) || (!crcl.inside(pA) && crcl.inside(pB))){
+  boolean collides(Circle crcl){ //Sgmt-crcl
+    if((crcl.collides(pA) && !crcl.collides(pB)) || (!crcl.collides(pA) && crcl.collides(pB))){
       return true;
-    } else if(crcl.inside(pA) && crcl.inside(pB)){
+    } else if(crcl.collides(pA) && crcl.collides(pB)){
       return false;
     } else {
-      Segment cs = new Segment(pA, crcl.pos);
+      Segment cs = new Segment(pA, crcl.pos, 0);
       PVector cv = new PVector(cs.pB.x - cs.pA.x, cs.pB.y - cs.pA.y);
       PVector bv = new PVector(pB.x - pA.x, pB.y - pA.y);
       
       float theta = PVector.angleBetween(cv, bv);
       float c = cs.length();
-      float b = c * cos(theta);
       float a = c * sin(theta);
       
       boolean condition1 = a <= crcl.r;
       
       
       PVector cv_inv = new PVector(cs.pA.x - cs.pB.x, cs.pA.y - cs.pB.y);
-      Segment c2s = new Segment(pB, crcl.pos);
+      Segment c2s = new Segment(pB, crcl.pos, 0);
       PVector c2v = new PVector(c2s.pA.x - c2s.pB.x, c2s.pA.y - c2s.pB.y);
       
       float angle1 = PVector.angleBetween(bv, cv_inv);
@@ -121,13 +133,13 @@ class Segment {
       boolean condition2 = cos1 * cos2 < 0;
       
       
-      // Uncomment to display orange bv & cv
-      //
-      strokeWeight(1);
-      stroke(255, 128, 0);
-      line(pA.x, pA.y, pA.x + cv.x, pA.y + cv.y);
-      line(pA.x, pA.y, pA.x + bv.x, pA.y + bv.y);
-      //
+      //// Uncomment to display orange bv & cv
+      ////
+      //strokeWeight(1);
+      //stroke(255, 128, 0);
+      //line(pA.x, pA.y, pA.x + cv.x, pA.y + cv.y);
+      //line(pA.x, pA.y, pA.x + bv.x, pA.y + bv.y);
+      ////
       
       return condition1 && condition2;
     }
