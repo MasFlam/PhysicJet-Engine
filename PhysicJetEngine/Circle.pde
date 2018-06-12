@@ -28,6 +28,29 @@ class Circle extends EngineObject {
     
   }
   
+  boolean collides(EngineObject o){
+    String type = o.getClass().toString();
+    boolean output = false;
+    switch(type){
+      case "class PhysicJetEngine$Circle":
+        output = collides((Circle) o);
+      break;
+      case "class PhysicJetEngine$Point":
+        output = collides((Point) o);
+      break;
+      case "class PhysicJetEngine$Polygon":
+        output = collides((Polygon) o);
+      break;
+      case "class PhysicJetEngine$Rectangle":
+        output = collides((Rectangle) o);
+      break;
+      case "class PhysicJetEngine$Segment":
+        output = collides((Segment) o);
+      break;
+    }
+    return output;
+  }
+  
   boolean collides(Point p){ //Crcl-point
     return collides(p.pos.x, p.pos.y);
   }
@@ -52,7 +75,23 @@ class Circle extends EngineObject {
     }
   }
   
-  boolean collides(Segment s){
+  boolean collides(Polygon p){ //Crcl-poly
+    boolean output = false;
+    for(Segment s : p.sides){
+      if(!output) output = collides(s);
+    }
+    return output;
+  }
+  
+  boolean collides(Rectangle r){ //Crcl-rect
+    boolean output = false;
+    for(Segment s : r.getSidesAsSegmentArray()){
+      if(!output) output = collides(s);
+    }
+    return output;
+  }
+  
+  boolean collides(Segment s){ //Crcl-sgmt
     return s.collides(this);
   }
   

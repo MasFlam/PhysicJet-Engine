@@ -18,6 +18,33 @@ class Polygon extends EngineObject {
     }
   }
   
+  boolean collides(EngineObject o){
+    String type = o.getClass().toString();
+    boolean output = false;
+    switch(type){
+      case "class PhysicJetEngine$Circle":
+        output = collides((Circle) o);
+      break;
+      case "class PhysicJetEngine$Point":
+        output = collides((Point) o);
+      break;
+      case "class PhysicJetEngine$Polygon":
+        output = collides((Polygon) o);
+      break;
+      case "class PhysicJetEngine$Rectangle":
+        output = collides((Rectangle) o);
+      break;
+      case "class PhysicJetEngine$Segment":
+        output = collides((Segment) o);
+      break;
+    }
+    return output;
+  }
+  
+  boolean collides(Circle c){ //Poly-crcl
+    return c.collides(this);
+  }
+  
   boolean collides(Segment s){ //Poly-sgmt
     for(int i = 0; i < sides.length; i++){
       if(sides[i].collides(s)){

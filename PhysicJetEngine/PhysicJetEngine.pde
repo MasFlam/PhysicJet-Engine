@@ -6,12 +6,17 @@ void setup(){
   ellipseMode(RADIUS);
   background(0);
   
-  world = new Engine(new PVector(0, 0.5), 0.98);
-  world.push(new Circle(200, 200, 40, 1.1), new Segment(100, 420, 440, 42, 0.7), new Point(320, 240, 1.8));
+  world = new Engine(new PVector(0, 0.1), 0.98);
+  world.push(new Circle(240, 100, 40, 1.1), new Circle(100, 70, 42, 0.7));//, new Point(320, 240, 1.8));
+  world.push(new Rectangle(0, 0, width, height, 0).addFlag("static"));
+  world.objects.get(0).applyForce(new PVector(-4, 0));
+  //println(world.objects.get(0).collides(world.objects.get(1)));
 }
 
 void mousePressed(){
   temp = true;
+  
+  world.push(new Circle(mouseX, mouseY, random(35, 55), random(0.8, 1.1)));
 }
 
 void draw(){

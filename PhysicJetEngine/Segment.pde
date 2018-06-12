@@ -30,8 +30,8 @@ class Segment extends EngineObject {
   void update(float drag){
     pA.add(vel);
     pB.add(vel);
-    vel.mult(drag * coefficient);
     vel.add(acc);
+    vel.mult(drag);
     acc.mult(0);
     pos = pA;
   }
@@ -44,6 +44,29 @@ class Segment extends EngineObject {
   
   float length(){
     return dist(pA.x, pA.y, pB.x, pB.y);
+  }
+  
+  boolean collides(EngineObject o){
+    String type = o.getClass().toString();
+    boolean output = false;
+    switch(type){
+      case "class PhysicJetEngine$Circle":
+        output = collides((Circle) o);
+      break;
+      case "class PhysicJetEngine$Point":
+        output = collides((Point) o);
+      break;
+      case "class PhysicJetEngine$Polygon":
+        output = collides((Polygon) o);
+      break;
+      case "class PhysicJetEngine$Rectangle":
+        output = collides((Rectangle) o);
+      break;
+      case "class PhysicJetEngine$Segment":
+        output = collides((Segment) o);
+      break;
+    }
+    return output;
   }
   
   boolean collides(Segment s){ //Sgmt-sgmt

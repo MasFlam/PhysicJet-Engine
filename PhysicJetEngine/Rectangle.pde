@@ -30,6 +30,33 @@ class Rectangle extends EngineObject {
     return sides;
   }
   
+  boolean collides(EngineObject o){
+    String type = o.getClass().toString();
+    boolean output = false;
+    switch(type){
+      case "class PhysicJetEngine$Circle":
+        output = collides((Circle) o);
+      break;
+      case "class PhysicJetEngine$Point":
+        output = collides((Point) o);
+      break;
+      case "class PhysicJetEngine$Polygon":
+        output = collides((Polygon) o);
+      break;
+      case "class PhysicJetEngine$Rectangle":
+        output = collides((Rectangle) o);
+      break;
+      case "class PhysicJetEngine$Segment":
+        output = collides((Segment) o);
+      break;
+    }
+    return output;
+  }
+  
+  boolean collides(Circle c){ //Rect-crcl
+    return c.collides(this);
+  }
+  
   boolean collides(Segment s){ //Rect-sgmt
     Segment[] sides = this.getSidesAsSegmentArray();
     for(int i = 0; i < sides.length; i++){

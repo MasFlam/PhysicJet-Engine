@@ -14,6 +14,29 @@ class Point extends EngineObject {
     point(pos.x, pos.y);
   }
   
+  boolean collides(EngineObject o){
+    String type = o.getClass().toString();
+    boolean output = false;
+    switch(type){
+      case "class PhysicJetEngine$Circle":
+        output = collides((Circle) o);
+      break;
+      case "class PhysicJetEngine$Point":
+        output = collides((Point) o);
+      break;
+      case "class PhysicJetEngine$Polygon":
+        output = collides((Polygon) o);
+      break;
+      case "class PhysicJetEngine$Rectangle":
+        output = collides((Rectangle) o);
+      break;
+      case "class PhysicJetEngine$Segment":
+        output = collides((Segment) o);
+      break;
+    }
+    return output;
+  }
+  
   boolean collides(Segment s){ //Point-sgmt
     float l = s.length();
     float d1 = dist(s.pA.x, s.pA.y, this.pos.x, this.pos.y);
